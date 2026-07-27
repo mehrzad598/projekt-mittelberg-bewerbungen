@@ -1,0 +1,18 @@
+{
+  "name": "projekt-mittelberg-bewerbung",
+  "version": "1.2.0",
+  "private": true,
+  "description": "Eigenst\u00e4ndiges Bewerbungsportal f\u00fcr Projekt Mittelberg",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0"
+  }
+}

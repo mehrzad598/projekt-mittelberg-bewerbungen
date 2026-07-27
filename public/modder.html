@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Modder-Bewerbung für Projekt Mittelberg.">
+  <title>Modder-Bewerbung – Projekt Mittelberg</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="container nav">
+    <div class="brand"><div class="logo">PM</div><span>Projekt Mittelberg</span></div>
+    <div class="navlinks">
+      <a class="btn" href="/">Admin & Supporter</a>
+      <a class="btn" href="/modder">Modder</a>
+      <a class="btn" href="/skinner">Skinner</a>
+      <a class="btn" href="/admin">Admin-Menü</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Modder-Bewerbung</span>
+          <h1>🔧 Werde Modder bei Projekt Mittelberg</h1>
+          <p>Du kennst dich mit dem Giants Editor, Blender oder anderen Modding-Werkzeugen aus? Dann bewirb dich hier als Modder.</p>
+          <a class="btn primary" href="#bewerbung">Jetzt als Modder bewerben</a>
+        </div>
+        <aside class="hero-card">
+          <div class="role-card">
+            <strong>Modder</strong>
+            <p>Diese Seite ist ausschließlich für Bewerbungen als Modder vorgesehen.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="bewerbung" class="section">
+      <div class="container">
+        <div class="form-card">
+          <div id="closedNotice" class="closed-notice" hidden>
+            <strong>Bewerbungen sind aktuell geschlossen.</strong>
+            <span>Zurzeit können keine neuen Bewerbungen gesendet werden.</span>
+          </div>
+
+          <h2>Deine Modder-Bewerbung</h2>
+
+          <form id="roleApplicationForm" data-role="Modder">
+            <div class="grid">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" maxlength="100" required>
+              </div>
+
+              <div class="field">
+                <label for="age">Altersgruppe</label>
+                <select id="age" name="age" required>
+                  <option value="">Bitte auswählen</option>
+                  <option value="Unter 16">Unter 16</option>
+                  <option value="16–17">16–17</option>
+                  <option value="18 oder älter">18 oder älter</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="discord">Discord-Name</label>
+                <input id="discord" name="discord" maxlength="100" placeholder="z. B. milo009357" required>
+              </div>
+
+              <div class="field">
+                <label for="email">E-Mail-Adresse</label>
+                <input id="email" name="email" type="email" maxlength="254" required>
+              </div>
+
+              <div class="field full">
+                <label for="experience">Welche Erfahrung hast du mit LS22/LS25-Modding?</label>
+                <textarea id="experience" name="experience" maxlength="1500" required></textarea>
+              </div>
+
+              <div class="field full">
+                <label for="programs">Welche Programme benutzt du?</label>
+                <textarea id="programs" name="programs" maxlength="1000" placeholder="Zum Beispiel Giants Editor, Blender, Photoshop, GIMP oder Paint.NET" required></textarea>
+              </div>
+
+              <div class="field full">
+                <label for="portfolio">Beispiele deiner bisherigen Arbeiten</label>
+                <textarea id="portfolio" name="portfolio" maxlength="1500" placeholder="Links oder eine Beschreibung deiner Mods/Skins" required></textarea>
+              </div>
+
+              <div class="field full">
+                <label for="motivation">Warum möchtest du Modder bei Projekt Mittelberg werden?</label>
+                <textarea id="motivation" name="motivation" maxlength="1800" required></textarea>
+              </div>
+
+              <div class="field full">
+                <label for="availability">Wann und wie oft bist du verfügbar?</label>
+                <textarea id="availability" name="availability" maxlength="1000" required></textarea>
+              </div>
+
+              <div class="field full">
+                <label for="extra">Weitere Angaben <span class="hint">Optional</span></label>
+                <textarea id="extra" name="extra" maxlength="1000"></textarea>
+              </div>
+
+              <div class="field full">
+                <label class="check">
+                  <input id="consent" name="consent" type="checkbox" required>
+                  <span>Ich stimme zu, dass meine Angaben zur Bearbeitung der Bewerbung gespeichert werden.</span>
+                </label>
+              </div>
+            </div>
+
+            <p class="note">Trage keine Passwörter, Adresse oder andere besonders private Daten ein.</p>
+            <button id="submitBtn" class="btn primary" type="submit">Bewerbung absenden</button>
+            <div id="message" class="message" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Projekt Mittelberg · Modder-Bewerbung</footer>
+  <script src="/role-application.js"></script>
+</body>
+</html>
