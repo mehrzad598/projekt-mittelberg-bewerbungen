@@ -1,4 +1,3 @@
-
 const express = require("express");
 const session = require("express-session");
 const helmet = require("helmet");
@@ -7,21 +6,29 @@ const fs = require("fs");
 const crypto = require("crypto");
 
 const app = express();
-
 const PORT = process.env.PORT || 3000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "bitte-aendern";
-const SESSION_SECRET = process.env.SESSION_SECRET || "bitte-unbedingt-aendern";
 
-const DATA_FILE = path.join(__dirname, "data", "applications.json");
-const SETTINGS_FILE = path.join(__dirname, "data", "settings.json");
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "11011968";
+const SESSION_SECRET =
+  process.env.SESSION_SECRET || "projekt-mittelberg-session-secret";
 
-const ROLES = ["Admin", "Supporter", "Modder", "Skinner"];
+const DATA_DIR = path.join(__dirname, "data");
+const DATA_FILE = path.join(DATA_DIR, "applications.json");
+const SETTINGS_FILE = path.join(DATA_DIR, "settings.json");
+
+const PUBLIC_DIR = path.join(__dirname, "public");
+const INDEX_FILE = path.join(PUBLIC_DIR, "index.html");
+
+const ROLES = ["Modder", "Skinner", "Supporter", "Admin"];
 
 app.set("trust proxy", 1);
 
+fs.mkdirSync(DATA_DIR, { recursive: true });
+fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+
 app.use(
   helmet({
-    contentSecurityPolicy: false
+    contentSecurityPolicy: false,
   })
 );
 
@@ -38,107 +45,68 @@ app.use(
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 60 * 8
-    }
+      maxAge: 1000 * 60 * 60 * 8,
+    },
   })
 );
 
-
-/* =========================
-   DATEIEN
-========================= */
-
-function ensureDataFiles() {
-  const dataDir = path.join(__dirname, "data");
-
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-
-  if (!fs.existsSync(DATA_FILE)) {
-    fs.writeFileSync(
-      DATA_FILE,
-      JSON.stringify({ applications: [] }, null, 2),
-      "utf8"
-    );
-  }
-
-  if (!fs.existsSync(SETTINGS_FILE)) {
-    fs.writeFileSync(
-      SETTINGS_FILE,
-      JSON.stringify(
-        {
-          applications: {
-            Admin: true,
-            Supporter: true,
-            Modder: true,
-            Skinner: true
-          },
-          updatedAt: null
-        },
-        null,
-        2
-      ),
-      "utf8"
-    );
-  }
+function defaultSettings() {
+  return {
+    applications: {
+      Modder: true,
+      Skinner: true,
+      Supporter: true,
+      Admin: true,
+    },
+    updatedAt: null,
+  };
 }
-
-ensureDataFiles();
-
-
-/* =========================
-   EINSTELLUNGEN
-========================= */
 
 function readSettings() {
-  const defaultSettings = {
-    applications: {
-      Admin: true,
-      Supporter: true,
-      Modder: true,
-      Skinner: true
-    },
-    updatedAt: null
-  };
-
   try {
-    const parsed = JSON.parse(
-      fs.readFileSync(SETTINGS_FILE, "utf8")
-    );
+    const parsed = JSON.parse(fs.readFileSync(SETTINGS_FILE, "utf8"));
 
-    return {
-      applications: {
-        Admin:
-          typeof parsed.applications?.Admin === "boolean"
-            ? parsed.applications.Admin
-            : true,
+    // Neue Struktur
+    if (parsed.applications && typeof parsed.applications === "object") {
+      const settings = defaultSettings();
 
-        Supporter:
-          typeof parsed.applications?.Supporter === "boolean"
-            ? parsed.applications.Supporter
-            : true,
+      for (const role of ROLES) {
+        if (typeof parsed.applications[role] === "boolean") {
+          settings.applications[role] = parsed.applications[role];
+        }
+      }
 
-        Modder:
-          typeof parsed.applications?.Modder === "boolean"
-            ? parsed.applications.Modder
-            : true,
+      settings.updatedAt = parsed.updatedAt || null;
+      return settings;
+    }
 
-        Skinner:
-          typeof parsed.applications?.Skinner === "boolean"
-            ? parsed.applications.Skinner
-            : true
-      },
+    // Alte Struktur automatisch übernehmen
+    if (typeof parsed.applicationsOpen === "boolean") {
+      const settings = defaultSettings();
 
-      updatedAt: parsed.updatedAt || null
-    };
+      for (const role of ROLES) {
+        settings.applications[role] = parsed.applicationsOpen;
+      }
+
+      settings.updatedAt = parsed.updatedAt || null;
+      return settings;
+    }
+
+    return defaultSettings();
   } catch {
-    return defaultSettings;
+    const settings = defaultSettings();
+
+    try {
+      saveSettings(settings);
+    } catch {}
+
+    return settings;
   }
 }
 
-
 function saveSettings(settings) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+
   const temp = `${SETTINGS_FILE}.tmp`;
 
   fs.writeFileSync(
@@ -149,11 +117,6 @@ function saveSettings(settings) {
 
   fs.renameSync(temp, SETTINGS_FILE);
 }
-
-
-/* =========================
-   BEWERBUNGEN
-========================= */
 
 function readApplications() {
   try {
@@ -169,8 +132,9 @@ function readApplications() {
   }
 }
 
-
 function saveApplications(applications) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+
   const temp = `${DATA_FILE}.tmp`;
 
   fs.writeFileSync(
@@ -182,29 +146,19 @@ function saveApplications(applications) {
   fs.renameSync(temp, DATA_FILE);
 }
 
-
-/* =========================
-   HILFSFUNKTIONEN
-========================= */
-
 function clean(value, max = 1000) {
-  if (typeof value !== "string") {
-    return "";
-  }
-
+  if (typeof value !== "string") return "";
   return value.trim().slice(0, max);
 }
-
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email);
 }
 
-
 function requireAdmin(req, res, next) {
   if (!req.session.isAdmin) {
     return res.status(401).json({
-      error: "Nicht angemeldet."
+      error: "Nicht angemeldet.",
     });
   }
 
@@ -213,29 +167,24 @@ function requireAdmin(req, res, next) {
 
 
 /* =========================
-   BEWERBUNG ABSCHICKEN
+   BEWERBUNG ABSENDEN
 ========================= */
 
 app.post("/api/apply", (req, res) => {
   try {
-    const settings = readSettings();
-
     const role = clean(req.body.role, 30);
 
     if (!ROLES.includes(role)) {
       return res.status(400).json({
-        error: "Bitte wähle eine gültige Bewerbungsart."
+        error: "Ungültige Bewerbungsart.",
       });
     }
 
-    /*
-      WICHTIG:
-      Jede Rolle wird einzeln geprüft.
-    */
+    const settings = readSettings();
 
     if (settings.applications[role] !== true) {
       return res.status(403).json({
-        error: `Die ${role}-Bewerbung ist aktuell geschlossen.`
+        error: `Die ${role}-Bewerbung ist aktuell geschlossen.`,
       });
     }
 
@@ -243,110 +192,71 @@ app.post("/api/apply", (req, res) => {
     const discord = clean(req.body.discord, 100);
     const email = clean(req.body.email, 254).toLowerCase();
     const age = clean(req.body.age, 30);
-
-    const experience = clean(
-      req.body.experience,
-      1500
-    );
-
-    const motivation = clean(
-      req.body.motivation,
-      1800
-    );
-
-    const availability = clean(
-      req.body.availability,
-      1000
-    );
-
-    const extra = clean(
-      req.body.extra,
-      1000
-    );
-
-    const programs = clean(
-      req.body.programs,
-      1000
-    );
-
-    const portfolio = clean(
-      req.body.portfolio,
-      1500
-    );
+    const experience = clean(req.body.experience, 1500);
+    const motivation = clean(req.body.motivation, 1800);
+    const availability = clean(req.body.availability, 1000);
+    const extra = clean(req.body.extra, 1000);
+    const programs = clean(req.body.programs, 1000);
+    const portfolio = clean(req.body.portfolio, 1500);
 
     const consent = req.body.consent === true;
 
-
     if (name.length < 2) {
       return res.status(400).json({
-        error: "Bitte gib deinen Namen ein."
+        error: "Bitte gib deinen Namen ein.",
       });
     }
-
 
     if (discord.length < 2) {
       return res.status(400).json({
-        error: "Bitte gib deinen Discord-Namen ein."
+        error: "Bitte gib deinen Discord-Namen ein.",
       });
     }
-
 
     if (!isValidEmail(email)) {
       return res.status(400).json({
-        error: "Bitte gib eine gültige E-Mail-Adresse ein."
+        error: "Bitte gib eine gültige E-Mail-Adresse ein.",
       });
     }
 
-
-    /*
-      Unterstützt sowohl die alten Alterswerte
-      als auch freie Altersangaben.
-    */
-
-    if (age.length < 1) {
+    if (
+      !["Unter 16", "16–17", "18 oder älter"].includes(age)
+    ) {
       return res.status(400).json({
-        error: "Bitte gib dein Alter an."
+        error: "Bitte wähle deine Altersgruppe.",
       });
     }
-
 
     if (experience.length < 20) {
       return res.status(400).json({
-        error: "Bitte beschreibe deine Erfahrung genauer."
+        error: "Bitte beschreibe deine Erfahrung genauer.",
       });
     }
-
 
     if (motivation.length < 30) {
       return res.status(400).json({
-        error: "Bitte erkläre deine Motivation genauer."
+        error: "Bitte erkläre deine Motivation genauer.",
       });
     }
-
 
     if (availability.length < 5) {
       return res.status(400).json({
-        error: "Bitte gib deine Verfügbarkeit an."
+        error: "Bitte gib deine Verfügbarkeit an.",
       });
     }
-
 
     if (!consent) {
       return res.status(400).json({
-        error: "Du musst der Speicherung zustimmen."
+        error: "Du musst der Speicherung zustimmen.",
       });
     }
 
-
     const applications = readApplications();
-
-    const now = new Date().toISOString();
 
     applications.unshift({
       id: crypto.randomBytes(12).toString("hex"),
 
       role,
-
       name,
       discord,
       email,
@@ -362,24 +272,20 @@ app.post("/api/apply", (req, res) => {
 
       status: "Neu",
 
-      createdAt: now,
-      updatedAt: now
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     });
-
 
     saveApplications(applications);
 
-
     res.status(201).json({
-      ok: true
+      ok: true,
     });
-
   } catch (error) {
-
     console.error(error);
 
     res.status(500).json({
-      error: "Die Bewerbung konnte nicht gespeichert werden."
+      error: "Die Bewerbung konnte nicht gespeichert werden.",
     });
   }
 });
@@ -391,6 +297,45 @@ app.post("/api/apply", (req, res) => {
 
 app.get("/api/application-status", (req, res) => {
   res.json(readSettings());
+});
+
+
+/* =========================
+   ADMIN LOGIN
+========================= */
+
+app.post("/api/admin/login", (req, res) => {
+  const password = clean(req.body.password, 200);
+
+  if (password !== ADMIN_PASSWORD) {
+    return res.status(401).json({
+      error: "Falsches Passwort.",
+    });
+  }
+
+  req.session.isAdmin = true;
+
+  req.session.save(() => {
+    res.json({
+      ok: true,
+    });
+  });
+});
+
+
+app.post("/api/admin/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.json({
+      ok: true,
+    });
+  });
+});
+
+
+app.get("/api/admin/me", (req, res) => {
+  res.json({
+    loggedIn: Boolean(req.session.isAdmin),
+  });
 });
 
 
@@ -411,97 +356,29 @@ app.patch(
   "/api/admin/settings",
   requireAdmin,
   (req, res) => {
-
     const role = clean(req.body.role, 30);
+    const open = req.body.open;
 
     if (!ROLES.includes(role)) {
       return res.status(400).json({
-        error: "Ungültige Bewerbungsart."
+        error: "Ungültige Bewerbungsart.",
       });
     }
 
-
-    if (typeof req.body.open !== "boolean") {
+    if (typeof open !== "boolean") {
       return res.status(400).json({
-        error: "Ungültiger Bewerbungsstatus."
+        error: "Ungültiger Bewerbungsstatus.",
       });
     }
-
 
     const settings = readSettings();
 
-    settings.applications[role] =
-      req.body.open;
-
-    settings.updatedAt =
-      new Date().toISOString();
-
+    settings.applications[role] = open;
+    settings.updatedAt = new Date().toISOString();
 
     saveSettings(settings);
 
     res.json(settings);
-  }
-);
-
-
-/* =========================
-   ADMIN LOGIN
-========================= */
-
-app.post(
-  "/api/admin/login",
-  (req, res) => {
-
-    const password =
-      clean(req.body.password, 200);
-
-
-    if (password !== ADMIN_PASSWORD) {
-
-      return res.status(401).json({
-        error: "Falsches Passwort."
-      });
-
-    }
-
-
-    req.session.isAdmin = true;
-
-    req.session.save(() => {
-
-      res.json({
-        ok: true
-      });
-
-    });
-  }
-);
-
-
-app.post(
-  "/api/admin/logout",
-  (req, res) => {
-
-    req.session.destroy(() => {
-
-      res.json({
-        ok: true
-      });
-
-    });
-  }
-);
-
-
-app.get(
-  "/api/admin/me",
-  (req, res) => {
-
-    res.json({
-      loggedIn:
-        Boolean(req.session.isAdmin)
-    });
-
   }
 );
 
@@ -514,101 +391,64 @@ app.get(
   "/api/admin/applications",
   requireAdmin,
   (req, res) => {
+    const role = clean(req.query.role, 30);
 
-    const role = clean(
-      req.query.role,
-      30
-    );
-
-    let applications =
-      readApplications();
-
-
-    /*
-      Filter nach Rolle.
-      Ohne Filter werden alle angezeigt.
-    */
+    let applications = readApplications();
 
     if (role && ROLES.includes(role)) {
-
-      applications =
-        applications.filter(
-          application =>
-            application.role === role
-        );
-
+      applications = applications.filter(
+        (application) => application.role === role
+      );
     }
 
-
     res.json({
-      applications
+      applications,
     });
-
   }
 );
 
 
 /* =========================
-   STATUS EINER BEWERBUNG
+   STATUS ÄNDERN
 ========================= */
 
 app.patch(
   "/api/admin/applications/:id",
   requireAdmin,
   (req, res) => {
-
     const allowed = [
       "Neu",
       "In Prüfung",
       "Angenommen",
-      "Abgelehnt"
+      "Abgelehnt",
     ];
 
-
-    const status =
-      clean(req.body.status, 30);
-
+    const status = clean(req.body.status, 30);
 
     if (!allowed.includes(status)) {
-
       return res.status(400).json({
-        error: "Ungültiger Status."
+        error: "Ungültiger Status.",
       });
-
     }
 
+    const applications = readApplications();
 
-    const applications =
-      readApplications();
-
-
-    const application =
-      applications.find(
-        item =>
-          item.id === req.params.id
-      );
-
+    const application = applications.find(
+      (item) => item.id === req.params.id
+    );
 
     if (!application) {
-
       return res.status(404).json({
-        error: "Bewerbung nicht gefunden."
+        error: "Bewerbung nicht gefunden.",
       });
-
     }
 
-
     application.status = status;
-
-    application.updatedAt =
-      new Date().toISOString();
-
+    application.updatedAt = new Date().toISOString();
 
     saveApplications(applications);
 
-
     res.json(application);
-
   }
 );
 
@@ -621,37 +461,23 @@ app.delete(
   "/api/admin/applications/:id",
   requireAdmin,
   (req, res) => {
+    const applications = readApplications();
 
-    const applications =
-      readApplications();
+    const filtered = applications.filter(
+      (item) => item.id !== req.params.id
+    );
 
-
-    const filtered =
-      applications.filter(
-        item =>
-          item.id !== req.params.id
-      );
-
-
-    if (
-      filtered.length ===
-      applications.length
-    ) {
-
+    if (filtered.length === applications.length) {
       return res.status(404).json({
-        error: "Bewerbung nicht gefunden."
+        error: "Bewerbung nicht gefunden.",
       });
-
     }
-
 
     saveApplications(filtered);
 
-
     res.json({
-      ok: true
+      ok: true,
     });
-
   }
 );
 
@@ -660,57 +486,22 @@ app.delete(
    WEBSITE
 ========================= */
 
-app.use(
-  express.static(
-    path.join(__dirname, "public")
-  )
-);
-
+app.use(express.static(PUBLIC_DIR));
 
 app.get("/", (req, res) => {
-
-  res.sendFile(
-    path.join(
-      __dirname,
-      "public",
-      "index.html"
-    )
-  );
-
+  res.sendFile(INDEX_FILE);
 });
 
-
 app.get(
-  [
-    "/modder",
-    "/skinner",
-    "/supporter",
-    "/admin"
-  ],
+  ["/modder", "/skinner", "/supporter", "/admin"],
   (req, res) => {
-
-    res.sendFile(
-      path.join(
-        __dirname,
-        "public",
-        "index.html"
-      )
-    );
-
+    res.sendFile(INDEX_FILE);
   }
 );
 
 
-/* =========================
-   SERVER
-========================= */
-
 app.listen(PORT, () => {
-
   console.log(
     `Projekt Mittelberg Bewerbungsportal läuft auf Port ${PORT}`
   );
-
 });
-
-
