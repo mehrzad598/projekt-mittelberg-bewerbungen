@@ -557,10 +557,10 @@
       <button class="application-nav" onclick="showPage('supporter', this)">
         Supporter
       </button>
-
-      <button class="admin-menu-button" onclick="showPage('admin', this)">
-       Admin
+<button class="application-nav" onclick="showPage('admin', this)">
+  Admin
 </button>
+     
     </nav>
 <button class="admin-menu-button" onclick="showPage('admin-login', this)">
   Team Mittelberg Bereich
@@ -896,7 +896,128 @@
     </div>
 
   </section>
+<section id="admin-login" class="page">
 
+  <div class="section-title">
+    <h2>Team Mittelberg Bereich</h2>
+    <p>Dieser Bereich ist nur für die Projektleitung.</p>
+  </div>
+
+  <div class="login-box" id="loginBox">
+
+    <div class="form-card">
+
+      <h3>Team-Verwaltung</h3>
+
+      <p style="color:#94a3b8;">
+        Bitte melde dich mit dem Team-Passwort an.
+      </p>
+
+      <div class="field">
+        <label>Admin-Passwort</label>
+
+        <input
+          type="password"
+          id="adminPassword"
+          placeholder="Passwort eingeben"
+        >
+      </div>
+
+      <div class="form-actions">
+        <button class="primary-btn" onclick="adminLogin()">
+          Anmelden
+        </button>
+      </div>
+
+      <div id="loginMessage" class="message"></div>
+
+    </div>
+
+  </div>
+
+  <div class="admin-panel" id="adminPanel">
+
+    <h3>⚙️ Bewerbungsverwaltung</h3>
+
+    <p style="color:#94a3b8;">
+      Öffne und schließe jede Bewerbungsart einzeln.
+    </p>
+
+    <div class="settings-grid">
+
+      <div class="setting">
+        <div>
+          <div class="setting-name">🛠️ Modder</div>
+          <div class="setting-state" id="state-Modder">
+            Wird geladen...
+          </div>
+        </div>
+        <button class="toggle" id="toggle-Modder"
+          onclick="toggleApplication('Modder')">...</button>
+      </div>
+
+      <div class="setting">
+        <div>
+          <div class="setting-name">🎨 Skinner</div>
+          <div class="setting-state" id="state-Skinner">
+            Wird geladen...
+          </div>
+        </div>
+        <button class="toggle" id="toggle-Skinner"
+          onclick="toggleApplication('Skinner')">...</button>
+      </div>
+
+      <div class="setting">
+        <div>
+          <div class="setting-name">🛡️ Supporter</div>
+          <div class="setting-state" id="state-Supporter">
+            Wird geladen...
+          </div>
+        </div>
+        <button class="toggle" id="toggle-Supporter"
+          onclick="toggleApplication('Supporter')">...</button>
+      </div>
+
+      <div class="setting">
+        <div>
+          <div class="setting-name">👑 Admin</div>
+          <div class="setting-state" id="state-Admin">
+            Wird geladen...
+          </div>
+        </div>
+        <button class="toggle" id="toggle-Admin"
+          onclick="toggleApplication('Admin')">...</button>
+      </div>
+
+    </div>
+
+    <h3>📋 Bewerbungen</h3>
+
+    <div class="application-tabs">
+
+      <button class="active" id="tab-Modder"
+        onclick="loadApplications('Modder')">Modder</button>
+
+      <button id="tab-Skinner"
+        onclick="loadApplications('Skinner')">Skinner</button>
+
+      <button id="tab-Supporter"
+        onclick="loadApplications('Supporter')">Supporter</button>
+
+      <button id="tab-Admin"
+        onclick="loadApplications('Admin')">Admin</button>
+
+    </div>
+
+    <div id="applicationsList"></div>
+
+    <button class="logout" onclick="adminLogout()">
+      Abmelden
+    </button>
+
+  </div>
+
+</section>
 </main>
 
 
