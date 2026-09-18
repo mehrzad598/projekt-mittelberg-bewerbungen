@@ -251,6 +251,4 @@ app.listen(PORT, () => {
 });
 
 
-app.listen(PORT, () => {
-  console.log(`Projekt Mittelberg Bewerbungsportal läuft auf Port ${PORT}`);
-});
+
