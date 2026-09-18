@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -82,6 +83,21 @@
 
     .nav button:hover,
     .nav button.active {
+      background: #2563eb;
+      color: white;
+      border-color: #3b82f6;
+    }
+
+    .admin-menu-button {
+      border: 1px solid rgba(96,165,250,.35);
+      background: rgba(37,99,235,.12);
+      color: #93c5fd;
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .admin-menu-button:hover {
       background: #2563eb;
       color: white;
       border-color: #3b82f6;
@@ -328,7 +344,7 @@
       color: #fca5a5;
     }
 
-    /* ADMIN */
+    /* TEAM-BEREICH */
 
     .login-box {
       max-width: 500px;
@@ -516,22 +532,7 @@
     }
   </style>
 </head>
-<style>
-.admin-menu-button {
-  border: 1px solid rgba(96,165,250,.35);
-  background: rgba(37,99,235,.12);
-  color: #93c5fd;
-  padding: 9px 14px;
-  border-radius: 10px;
-  font-weight: 700;
-}
 
-.admin-menu-button:hover {
-  background: #2563eb;
-  color: white;
-  border-color: #3b82f6;
-}
-</style>
 <body>
 
 <header class="header">
@@ -542,6 +543,7 @@
     </div>
 
     <nav class="nav">
+
       <button class="active" onclick="showPage('start', this)">
         Start
       </button>
@@ -557,14 +559,20 @@
       <button class="application-nav" onclick="showPage('supporter', this)">
         Supporter
       </button>
-<button class="application-nav" onclick="showPage('admin', this)">
-  Admin
-</button>
-     
+
+      <button class="application-nav" onclick="showPage('admin', this)">
+        Admin
+      </button>
+
     </nav>
-<button class="admin-menu-button" onclick="showPage('admin-login', this)">
-  Team Mittelberg Bereich
-</button>
+
+    <button
+      class="admin-menu-button"
+      onclick="showPage('admin-login', this)"
+    >
+      Team Mittelberg Bereich
+    </button>
+
   </div>
 </header>
 
@@ -689,44 +697,49 @@
   </section>
 
 
-  <!-- ADMIN -->
+  <!-- ADMIN-BEWERBUNG -->
 
   <section id="admin" class="page">
 
     <div class="section-title">
-      <h2>👑 Admin</h2>
+      <h2>👑 Admin-Bewerbung</h2>
       <p>
-        Hier kannst du dich als Admin bewerben oder
-        dich als Projektleitung anmelden.
+        Bewirb dich als Admin bei Projekt Mittelberg.
+      </p>
+    </div>
+
+    <div id="status-Admin"></div>
+    <div id="form-Admin"></div>
+
+  </section>
+
+
+  <!-- TEAM MITTELBERG BEREICH -->
+
+  <section id="admin-login" class="page">
+
+    <div class="section-title">
+      <h2>Team Mittelberg Bereich</h2>
+      <p>
+        Dieser Bereich ist nur für die Projektleitung.
       </p>
     </div>
 
 
-    <!-- ADMIN BEWERBUNG -->
-
-    <div style="margin-bottom:50px;">
-
-      <h3>👑 Admin-Bewerbung</h3>
-
-      <div id="status-Admin"></div>
-      <div id="form-Admin"></div>
-
-    </div>
-
-
-    <!-- ADMIN LOGIN -->
+    <!-- LOGIN -->
 
     <div class="login-box" id="loginBox">
 
       <div class="form-card">
 
-        <h3>🔐 Team-Verwaltung</h3>
+        <h3>Team-Verwaltung</h3>
 
         <p style="color:#94a3b8;">
-          Dieser Bereich ist nur für die Projektleitung.
+          Bitte melde dich mit dem Team-Passwort an.
         </p>
 
         <div class="field">
+
           <label>Admin-Passwort</label>
 
           <input
@@ -734,15 +747,18 @@
             id="adminPassword"
             placeholder="Passwort eingeben"
           >
+
         </div>
 
         <div class="form-actions">
+
           <button
             class="primary-btn"
             onclick="adminLogin()"
           >
             Anmelden
           </button>
+
         </div>
 
         <div id="loginMessage" class="message"></div>
@@ -752,7 +768,7 @@
     </div>
 
 
-    <!-- ADMIN PANEL -->
+    <!-- VERWALTUNG -->
 
     <div class="admin-panel" id="adminPanel">
 
@@ -765,11 +781,13 @@
       ">
 
         <div>
+
           <h3>⚙️ Bewerbungsverwaltung</h3>
 
           <p style="color:#94a3b8;">
             Öffne und schließe jede Bewerbungsart einzeln.
           </p>
+
         </div>
 
         <button class="logout" onclick="adminLogout()">
@@ -782,11 +800,20 @@
       <div class="settings-grid">
 
         <div class="setting">
+
           <div>
-            <div class="setting-name">🛠️ Modder</div>
-            <div class="setting-state" id="state-Modder">
+
+            <div class="setting-name">
+              🛠️ Modder
+            </div>
+
+            <div
+              class="setting-state"
+              id="state-Modder"
+            >
               Wird geladen...
             </div>
+
           </div>
 
           <button
@@ -796,15 +823,25 @@
           >
             ...
           </button>
+
         </div>
 
 
         <div class="setting">
+
           <div>
-            <div class="setting-name">🎨 Skinner</div>
-            <div class="setting-state" id="state-Skinner">
+
+            <div class="setting-name">
+              🎨 Skinner
+            </div>
+
+            <div
+              class="setting-state"
+              id="state-Skinner"
+            >
               Wird geladen...
             </div>
+
           </div>
 
           <button
@@ -814,15 +851,25 @@
           >
             ...
           </button>
+
         </div>
 
 
         <div class="setting">
+
           <div>
-            <div class="setting-name">🛡️ Supporter</div>
-            <div class="setting-state" id="state-Supporter">
+
+            <div class="setting-name">
+              🛡️ Supporter
+            </div>
+
+            <div
+              class="setting-state"
+              id="state-Supporter"
+            >
               Wird geladen...
             </div>
+
           </div>
 
           <button
@@ -832,15 +879,25 @@
           >
             ...
           </button>
+
         </div>
 
 
         <div class="setting">
+
           <div>
-            <div class="setting-name">👑 Admin</div>
-            <div class="setting-state" id="state-Admin">
+
+            <div class="setting-name">
+              👑 Admin
+            </div>
+
+            <div
+              class="setting-state"
+              id="state-Admin"
+            >
               Wird geladen...
             </div>
+
           </div>
 
           <button
@@ -850,6 +907,7 @@
           >
             ...
           </button>
+
         </div>
 
       </div>
@@ -896,128 +954,7 @@
     </div>
 
   </section>
-<section id="admin-login" class="page">
 
-  <div class="section-title">
-    <h2>Team Mittelberg Bereich</h2>
-    <p>Dieser Bereich ist nur für die Projektleitung.</p>
-  </div>
-
-  <div class="login-box" id="loginBox">
-
-    <div class="form-card">
-
-      <h3>Team-Verwaltung</h3>
-
-      <p style="color:#94a3b8;">
-        Bitte melde dich mit dem Team-Passwort an.
-      </p>
-
-      <div class="field">
-        <label>Admin-Passwort</label>
-
-        <input
-          type="password"
-          id="adminPassword"
-          placeholder="Passwort eingeben"
-        >
-      </div>
-
-      <div class="form-actions">
-        <button class="primary-btn" onclick="adminLogin()">
-          Anmelden
-        </button>
-      </div>
-
-      <div id="loginMessage" class="message"></div>
-
-    </div>
-
-  </div>
-
-  <div class="admin-panel" id="adminPanel">
-
-    <h3>⚙️ Bewerbungsverwaltung</h3>
-
-    <p style="color:#94a3b8;">
-      Öffne und schließe jede Bewerbungsart einzeln.
-    </p>
-
-    <div class="settings-grid">
-
-      <div class="setting">
-        <div>
-          <div class="setting-name">🛠️ Modder</div>
-          <div class="setting-state" id="state-Modder">
-            Wird geladen...
-          </div>
-        </div>
-        <button class="toggle" id="toggle-Modder"
-          onclick="toggleApplication('Modder')">...</button>
-      </div>
-
-      <div class="setting">
-        <div>
-          <div class="setting-name">🎨 Skinner</div>
-          <div class="setting-state" id="state-Skinner">
-            Wird geladen...
-          </div>
-        </div>
-        <button class="toggle" id="toggle-Skinner"
-          onclick="toggleApplication('Skinner')">...</button>
-      </div>
-
-      <div class="setting">
-        <div>
-          <div class="setting-name">🛡️ Supporter</div>
-          <div class="setting-state" id="state-Supporter">
-            Wird geladen...
-          </div>
-        </div>
-        <button class="toggle" id="toggle-Supporter"
-          onclick="toggleApplication('Supporter')">...</button>
-      </div>
-
-      <div class="setting">
-        <div>
-          <div class="setting-name">👑 Admin</div>
-          <div class="setting-state" id="state-Admin">
-            Wird geladen...
-          </div>
-        </div>
-        <button class="toggle" id="toggle-Admin"
-          onclick="toggleApplication('Admin')">...</button>
-      </div>
-
-    </div>
-
-    <h3>📋 Bewerbungen</h3>
-
-    <div class="application-tabs">
-
-      <button class="active" id="tab-Modder"
-        onclick="loadApplications('Modder')">Modder</button>
-
-      <button id="tab-Skinner"
-        onclick="loadApplications('Skinner')">Skinner</button>
-
-      <button id="tab-Supporter"
-        onclick="loadApplications('Supporter')">Supporter</button>
-
-      <button id="tab-Admin"
-        onclick="loadApplications('Admin')">Admin</button>
-
-    </div>
-
-    <div id="applicationsList"></div>
-
-    <button class="logout" onclick="adminLogout()">
-      Abmelden
-    </button>
-
-  </div>
-
-</section>
 </main>
 
 
@@ -1063,9 +1000,9 @@ function showPage(page, button) {
     behavior: "smooth"
   });
 
- if (page === "admin-login") {
-  checkAdmin();
-}
+  if (page === "admin-login") {
+    checkAdmin();
+  }
 
 }
 
@@ -1107,6 +1044,7 @@ function createForm(role) {
 
           <div class="field">
             <label>Name *</label>
+
             <input
               name="name"
               required
@@ -1117,6 +1055,7 @@ function createForm(role) {
 
           <div class="field">
             <label>Discord-Name *</label>
+
             <input
               name="discord"
               required
@@ -1127,6 +1066,7 @@ function createForm(role) {
 
           <div class="field">
             <label>E-Mail *</label>
+
             <input
               type="email"
               name="email"
@@ -1137,6 +1077,7 @@ function createForm(role) {
 
 
           <div class="field">
+
             <label>Alter *</label>
 
             <select name="age" required>
@@ -1158,10 +1099,12 @@ function createForm(role) {
               </option>
 
             </select>
+
           </div>
 
 
           <div class="field full">
+
             <label>
               Welche Erfahrungen hast du? *
             </label>
@@ -1172,10 +1115,12 @@ function createForm(role) {
               minlength="20"
               placeholder="Beschreibe deine bisherigen Erfahrungen..."
             ></textarea>
+
           </div>
 
 
           <div class="field full">
+
             <label>
               Warum möchtest du ${role} werden? *
             </label>
@@ -1186,10 +1131,12 @@ function createForm(role) {
               minlength="30"
               placeholder="Warum möchtest du unser Team unterstützen?"
             ></textarea>
+
           </div>
 
 
           <div class="field full">
+
             <label>
               Wie bist du erreichbar / wann bist du verfügbar? *
             </label>
@@ -1200,10 +1147,12 @@ function createForm(role) {
               minlength="5"
               placeholder="z.B. Montag bis Freitag ab 16 Uhr..."
             ></textarea>
+
           </div>
 
 
           <div class="field">
+
             <label>
               Programme / Kenntnisse
             </label>
@@ -1212,10 +1161,12 @@ function createForm(role) {
               name="programs"
               placeholder="z.B. Blender, Giants Editor, Photoshop..."
             ></textarea>
+
           </div>
 
 
           <div class="field">
+
             <label>
               Portfolio / Referenzen
             </label>
@@ -1224,10 +1175,12 @@ function createForm(role) {
               name="portfolio"
               placeholder="Links oder Informationen zu deinen Arbeiten..."
             ></textarea>
+
           </div>
 
 
           <div class="field full">
+
             <label>
               Weitere Informationen
             </label>
@@ -1236,6 +1189,7 @@ function createForm(role) {
               name="extra"
               placeholder="Gibt es noch etwas, das wir wissen sollten?"
             ></textarea>
+
           </div>
 
         </div>
@@ -1277,6 +1231,7 @@ function createForm(role) {
       </form>
 
     </div>
+
   `;
 }
 
@@ -1292,7 +1247,8 @@ async function loadPublicStatus() {
     const response =
       await fetch("/api/application-status");
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
     applicationSettings =
       data.applications || {};
@@ -1348,11 +1304,16 @@ function updateRolePage(role) {
 
     formContainer.innerHTML = `
       <div class="closed-box">
-        <h3>Diese Bewerbung ist momentan geschlossen.</h3>
+
+        <h3>
+          Diese Bewerbung ist momentan geschlossen.
+        </h3>
+
         <p>
           Die Projektleitung hat die ${role}-Bewerbung
           derzeit geschlossen.
         </p>
+
       </div>
     `;
   }
@@ -1426,7 +1387,6 @@ async function submitApplication(event, role) {
 
     message.textContent =
       "Deine Bewerbung wurde erfolgreich gesendet.";
-
 
     form.reset();
 
@@ -1532,7 +1492,6 @@ async function adminLogin() {
     message.textContent =
       "Erfolgreich angemeldet.";
 
-
     showAdminPanel();
 
 
@@ -1598,7 +1557,6 @@ async function loadAdminSettings() {
     roles.forEach(role => {
 
       updateAdminSetting(role);
-
       updateRolePage(role);
 
     });
@@ -1622,6 +1580,7 @@ function updateAdminSetting(role) {
     document.getElementById(
       `state-${role}`
     );
+
 
   const toggle =
     document.getElementById(
@@ -1731,7 +1690,9 @@ async function loadApplications(role) {
   document
     .querySelectorAll(".application-tabs button")
     .forEach(button => {
+
       button.classList.remove("active");
+
     });
 
 
@@ -1742,7 +1703,9 @@ async function loadApplications(role) {
 
 
   if (activeTab) {
+
     activeTab.classList.add("active");
+
   }
 
 
@@ -1753,7 +1716,9 @@ async function loadApplications(role) {
 
 
   container.innerHTML =
-    `<div class="empty">Bewerbungen werden geladen...</div>`;
+    `<div class="empty">
+      Bewerbungen werden geladen...
+    </div>`;
 
 
   try {
@@ -1929,9 +1894,14 @@ function renderApplications(applications) {
           </div>
 
 
-          <div class="info" style="grid-column:1/-1">
+          <div
+            class="info"
+            style="grid-column:1/-1"
+          >
 
-            <strong>Weitere Informationen</strong>
+            <strong>
+              Weitere Informationen
+            </strong>
 
             <span>
               ${escapeHtml(application.extra || "Keine Angabe")}
@@ -2048,7 +2018,9 @@ async function deleteApplication(id) {
       "Möchtest du diese Bewerbung wirklich löschen?"
     )
   ) {
+
     return;
+
   }
 
 
