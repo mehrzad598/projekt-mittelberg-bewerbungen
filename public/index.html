@@ -3,32 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projekt Mittelberg – Bewerbungsportal</title>
+
+<title>Projekt Mittelberg – Bewerbungen</title>
 
 <style>
 * {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b0f17;
-  color: white;
+:root {
+  --bg: #080b12;
+  --bg2: #0d111a;
+  --card: rgba(18, 24, 36, .92);
+  --card2: #111827;
+  --border: #273246;
+  --text: #f5f7fb;
+  --muted: #9ba7ba;
+  --accent: #5865f2;
+  --accent2: #4752c4;
+  --green: #32d583;
+  --red: #ff5d73;
+  --orange: #f0a43c;
 }
 
-header {
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top, #151c31 0%, var(--bg) 45%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.header {
   position: sticky;
   top: 0;
-  z-index: 100;
-  background: #101722;
-  border-bottom: 1px solid #263244;
+  z-index: 1000;
+  background: rgba(8, 11, 18, .92);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--border);
 }
 
 .nav {
-  max-width: 1200px;
+  max-width: 1250px;
   margin: auto;
-  padding: 15px 20px;
+  padding: 14px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,36 +70,43 @@ header {
 }
 
 .logo {
-  font-size: 21px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.logo span {
+  color: var(--accent);
 }
 
 .nav-buttons {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 7px;
+  justify-content: flex-end;
 }
 
-.nav-buttons button {
-  background: #1b2534;
-  border: 1px solid #2b394d;
-  color: white;
-  padding: 10px 15px;
+.nav-btn {
+  border: 1px solid var(--border);
+  background: #151d2b;
+  color: var(--text);
+  padding: 10px 14px;
   border-radius: 9px;
-  cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
+  transition: .2s;
 }
 
-.nav-buttons button:hover,
-.nav-buttons button.active {
-  background: #5865f2;
-  border-color: #5865f2;
+.nav-btn:hover,
+.nav-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: auto;
-  padding: 35px 20px;
+  padding: 35px 20px 80px;
 }
 
 .page {
@@ -77,26 +118,115 @@ header {
 }
 
 .hero {
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  padding: 55px 20px;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 7px 13px;
+  border: 1px solid var(--border);
+  background: rgba(88, 101, 242, .1);
+  color: #aeb6ff;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 18px;
 }
 
 .hero h1 {
-  font-size: 42px;
-  margin: 10px 0;
+  font-size: clamp(38px, 7vw, 68px);
+  margin: 0 0 15px;
+  letter-spacing: -2px;
+}
+
+.hero h1 span {
+  color: var(--accent);
 }
 
 .hero p {
-  color: #aab4c5;
-  line-height: 1.6;
+  color: var(--muted);
+  max-width: 680px;
+  line-height: 1.7;
+  font-size: 17px;
 }
 
 .card {
-  background: #111925;
-  border: 1px solid #263244;
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 25px;
+  padding: 26px;
   margin-bottom: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.18);
+}
+
+.card h1,
+.card h2,
+.card h3 {
+  margin-top: 0;
+}
+
+.subtitle {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.role-card {
+  background: #101724;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 22px;
+  text-align: left;
+  transition: .2s;
+}
+
+.role-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.role-icon {
+  font-size: 30px;
+  margin-bottom: 12px;
+}
+
+.role-card h3 {
+  margin: 0 0 7px;
+}
+
+.role-card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status.open {
+  background: rgba(50,213,131,.13);
+  color: var(--green);
+}
+
+.status.closed {
+  background: rgba(255,93,115,.13);
+  color: var(--red);
 }
 
 .form-grid {
@@ -116,19 +246,27 @@ header {
 }
 
 label {
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 14px;
 }
 
 input,
-select,
-textarea {
+textarea,
+select {
   width: 100%;
-  background: #0b121d;
-  color: white;
-  border: 1px solid #2b394d;
+  background: #090e17;
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 9px;
   padding: 12px;
   font-size: 15px;
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent);
 }
 
 textarea {
@@ -136,28 +274,41 @@ textarea {
   resize: vertical;
 }
 
-button {
-  font-family: inherit;
-}
-
-.submit {
-  background: #5865f2;
+.primary {
+  background: var(--accent);
   color: white;
   border: 0;
   padding: 13px 20px;
   border-radius: 9px;
-  font-weight: bold;
-  cursor: pointer;
+  font-weight: 800;
 }
 
-.submit:hover {
-  background: #4752c4;
+.primary:hover {
+  background: var(--accent2);
+}
+
+.secondary {
+  background: #202b3b;
+  color: white;
+  border: 1px solid var(--border);
+  padding: 11px 16px;
+  border-radius: 9px;
+  font-weight: 700;
+}
+
+.danger {
+  background: #76283a;
+  color: white;
+  border: 0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 700;
 }
 
 .message {
   display: none;
+  padding: 13px;
   margin-top: 15px;
-  padding: 12px;
   border-radius: 9px;
 }
 
@@ -166,50 +317,29 @@ button {
 }
 
 .success {
-  background: #123b29;
-  color: #8ff0b9;
+  background: #103523;
+  color: #7ff0ad;
 }
 
 .error {
-  background: #471e27;
-  color: #ff9fab;
+  background: #421b25;
+  color: #ff9baa;
 }
 
-.roles {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 25px;
+.closed-box {
+  padding: 25px;
+  background: rgba(240,164,60,.08);
+  border: 1px solid rgba(240,164,60,.35);
+  border-radius: 12px;
 }
 
-.roles button {
-  flex: 1;
-  min-width: 150px;
-  padding: 15px;
-  background: #182231;
-  color: white;
-  border: 1px solid #2b394d;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.roles button.active {
-  background: #5865f2;
-  border-color: #5865f2;
-}
-
-.closed {
-  background: #422b12;
-  border: 1px solid #72501d;
-  padding: 18px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+.closed-box h2 {
+  color: var(--orange);
 }
 
 .admin-login {
-  max-width: 450px;
-  margin: 50px auto;
+  max-width: 500px;
+  margin: 70px auto;
 }
 
 .admin-panel {
@@ -224,74 +354,125 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 15px;
   flex-wrap: wrap;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 15px;
 }
 
-.secondary {
-  background: #202b3b;
-  color: white;
-  border: 0;
-  padding: 11px 16px;
-  border-radius: 9px;
-  cursor: pointer;
+.setting-card {
+  background: #0d141f;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 20px;
 }
 
-.danger {
-  background: #8b2939;
+.setting-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.setting-card h3 {
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.filter {
+  background: #182231;
   color: white;
-  border: 0;
-  padding: 10px 14px;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  cursor: pointer;
+  padding: 9px 13px;
+  font-weight: 700;
+}
+
+.filter.active {
+  background: var(--accent);
+  border-color: var(--accent);
 }
 
 .application {
-  background: #0c141f;
-  border: 1px solid #28364a;
-  border-radius: 12px;
+  background: #0b121d;
+  border: 1px solid var(--border);
+  border-radius: 13px;
   padding: 18px;
-  margin-bottom: 15px;
+  margin-bottom: 14px;
 }
 
 .application-top {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 15px;
   flex-wrap: wrap;
 }
 
+.badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 .badge {
-  display: inline-block;
   background: #263349;
   padding: 5px 9px;
   border-radius: 20px;
   font-size: 12px;
-  margin-left: 5px;
 }
 
 .application details {
-  margin-top: 15px;
+  margin-top: 17px;
 }
 
 .application details div {
-  padding: 9px 0;
+  padding: 10px 0;
   border-bottom: 1px solid #202b3a;
+  line-height: 1.5;
 }
 
 .application-actions {
   display: flex;
   gap: 8px;
-  margin-top: 15px;
   flex-wrap: wrap;
+  margin-top: 15px;
 }
 
-@media(max-width:700px) {
+.empty {
+  text-align: center;
+  padding: 35px;
+  color: var(--muted);
+}
+
+@media(max-width: 900px) {
+  .role-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .nav {
     flex-direction: column;
   }
 
-  .form-grid {
+  .nav-buttons {
+    justify-content: center;
+  }
+}
+
+@media(max-width: 650px) {
+  .form-grid,
+  .settings-grid,
+  .role-grid {
     grid-template-columns: 1fr;
   }
 
@@ -299,8 +480,21 @@ button {
     grid-column: auto;
   }
 
-  .hero h1 {
-    font-size: 32px;
+  .nav-buttons {
+    width: 100%;
+  }
+
+  .nav-btn {
+    flex: 1;
+  }
+
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .card {
+    padding: 19px;
   }
 }
 </style>
@@ -308,37 +502,40 @@ button {
 
 <body>
 
-<header>
+<header class="header">
   <div class="nav">
 
     <div class="logo">
-      Projekt Mittelberg
+      Projekt <span>Mittelberg</span>
     </div>
 
     <div class="nav-buttons">
-      <button class="active" onclick="showPage('start', this)">
+
+      <button class="nav-btn active"
+        onclick="showPage('start', this)">
         🏠 Start
       </button>
 
-      <button onclick="showPage('bewerbung', this)">
-        📝 Bewerbungen
-      </button>
-
-      <button onclick="showPage('modder', this)">
+      <button class="nav-btn"
+        onclick="showPage('modder', this)">
         🔧 Modder
       </button>
 
-      <button onclick="showPage('skinner', this)">
+      <button class="nav-btn"
+        onclick="showPage('skinner', this)">
         🎨 Skinner
       </button>
 
-      <button onclick="showPage('supporter', this)">
+      <button class="nav-btn"
+        onclick="showPage('supporter', this)">
         🛡️ Supporter
       </button>
 
-      <button onclick="showPage('admin', this)">
+      <button class="nav-btn"
+        onclick="showPage('admin', this)">
         👑 Admin
       </button>
+
     </div>
 
   </div>
@@ -348,79 +545,68 @@ button {
 <!-- START -->
 
 <section id="start" class="page active">
+
   <div class="container">
 
     <div class="hero">
 
-      <h1>Projekt Mittelberg</h1>
+      <div class="hero-badge">
+        PROJEKT MITTELBERG
+      </div>
+
+      <h1>
+        Bewerbungs<span>portal</span>
+      </h1>
 
       <p>
-        Willkommen beim Bewerbungsportal von Projekt Mittelberg.
+        Willkommen beim offiziellen Bewerbungsportal
+        von Projekt Mittelberg.
       </p>
 
       <p>
-        Nutze die Navigation oben, um direkt zu deiner gewünschten
-        Bewerbung oder zum Admin-Bereich zu gelangen.
+        Bewirb dich direkt für unser Team als Modder,
+        Skinner, Supporter oder Admin.
       </p>
 
-      <button class="submit"
-        onclick="showPage('bewerbung')">
-        📝 Jetzt bewerben
+      <button class="primary"
+        onclick="showPage('modder')">
+        Bewerbung starten
       </button>
 
     </div>
 
   </div>
-</section>
 
-
-<!-- BEWERBUNGEN -->
-
-<section id="bewerbung" class="page">
-  <div class="container">
-
-    <div class="card">
-
-      <h1>Bewerbungen</h1>
-
-      <p>
-        Wähle aus, für welchen Bereich du dich bewerben möchtest.
-      </p>
-
-      <div class="roles">
-
-        <button onclick="showPage('modder')">
-          🔧 Modder
-        </button>
-
-        <button onclick="showPage('skinner')">
-          🎨 Skinner
-        </button>
-
-        <button onclick="showPage('supporter')">
-          🛡️ Supporter
-        </button>
-
-        <button onclick="showPage('admin')">
-          👑 Admin
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
 </section>
 
 
 <!-- MODDER -->
 
 <section id="modder" class="page">
+
   <div class="container">
 
-    <div class="card">
+    <div id="modderClosed"
+      class="closed-box"
+      style="display:none">
+
+      <h2>🔒 Modder-Bewerbungen geschlossen</h2>
+
+      <p>
+        Die Bewerbung für den Bereich Modder ist
+        momentan geschlossen.
+      </p>
+
+    </div>
+
+    <div id="modderFormBox" class="card">
 
       <h1>🔧 Modder-Bewerbung</h1>
+
+      <p class="subtitle">
+        Du möchtest Mods für Projekt Mittelberg
+        erstellen? Dann bewirb dich hier.
+      </p>
 
       <form onsubmit="submitApplication(event, 'Modder')">
 
@@ -453,8 +639,9 @@ button {
 
           <div class="field full">
             <label>Programme</label>
-            <textarea name="programs" required
-              placeholder="z.B. Blender, Giants Editor, Photoshop..."></textarea>
+            <textarea name="programs"
+              placeholder="z.B. Blender, Giants Editor..."
+              required></textarea>
           </div>
 
           <div class="field full">
@@ -479,8 +666,11 @@ button {
 
           <div class="field full">
             <label>
-              <input type="checkbox" name="consent" required>
-              Ich stimme der Speicherung meiner Bewerbungsdaten zu.
+              <input type="checkbox"
+                name="consent"
+                required>
+              Ich stimme der Speicherung meiner
+              Bewerbungsdaten zu.
             </label>
           </div>
 
@@ -488,7 +678,7 @@ button {
 
         <br>
 
-        <button class="submit">
+        <button class="primary">
           Bewerbung absenden
         </button>
 
@@ -499,17 +689,37 @@ button {
     </div>
 
   </div>
+
 </section>
 
 
 <!-- SKINNER -->
 
 <section id="skinner" class="page">
+
   <div class="container">
 
-    <div class="card">
+    <div id="skinnerClosed"
+      class="closed-box"
+      style="display:none">
+
+      <h2>🔒 Skinner-Bewerbungen geschlossen</h2>
+
+      <p>
+        Die Bewerbung für den Bereich Skinner ist
+        momentan geschlossen.
+      </p>
+
+    </div>
+
+    <div id="skinnerFormBox" class="card">
 
       <h1>🎨 Skinner-Bewerbung</h1>
+
+      <p class="subtitle">
+        Du erstellst Skins und Texturen für
+        Landwirtschafts-Simulator? Bewirb dich hier.
+      </p>
 
       <form onsubmit="submitApplication(event, 'Skinner')">
 
@@ -567,8 +777,11 @@ button {
 
           <div class="field full">
             <label>
-              <input type="checkbox" name="consent" required>
-              Ich stimme der Speicherung meiner Bewerbungsdaten zu.
+              <input type="checkbox"
+                name="consent"
+                required>
+              Ich stimme der Speicherung meiner
+              Bewerbungsdaten zu.
             </label>
           </div>
 
@@ -576,7 +789,7 @@ button {
 
         <br>
 
-        <button class="submit">
+        <button class="primary">
           Bewerbung absenden
         </button>
 
@@ -587,17 +800,37 @@ button {
     </div>
 
   </div>
+
 </section>
 
 
 <!-- SUPPORTER -->
 
 <section id="supporter" class="page">
+
   <div class="container">
 
-    <div class="card">
+    <div id="supporterClosed"
+      class="closed-box"
+      style="display:none">
+
+      <h2>🔒 Supporter-Bewerbungen geschlossen</h2>
+
+      <p>
+        Die Bewerbung für den Bereich Supporter ist
+        momentan geschlossen.
+      </p>
+
+    </div>
+
+    <div id="supporterFormBox" class="card">
 
       <h1>🛡️ Supporter-Bewerbung</h1>
+
+      <p class="subtitle">
+        Du möchtest unser Team bei Support und
+        Community unterstützen? Bewirb dich hier.
+      </p>
 
       <form onsubmit="submitApplication(event, 'Supporter')">
 
@@ -645,8 +878,11 @@ button {
 
           <div class="field full">
             <label>
-              <input type="checkbox" name="consent" required>
-              Ich stimme der Speicherung meiner Bewerbungsdaten zu.
+              <input type="checkbox"
+                name="consent"
+                required>
+              Ich stimme der Speicherung meiner
+              Bewerbungsdaten zu.
             </label>
           </div>
 
@@ -654,7 +890,7 @@ button {
 
         <br>
 
-        <button class="submit">
+        <button class="primary">
           Bewerbung absenden
         </button>
 
@@ -665,6 +901,7 @@ button {
     </div>
 
   </div>
+
 </section>
 
 
@@ -674,35 +911,41 @@ button {
 
   <div class="container">
 
-    <div id="adminLogin" class="card admin-login">
+    <div id="adminLogin"
+      class="card admin-login">
 
       <h1>🔐 Admin-Bereich</h1>
 
-      <p>
-        Bitte melde dich mit dem Admin-Passwort an.
+      <p class="subtitle">
+        Dieser Bereich ist nur für das
+        Projekt Mittelberg Team zugänglich.
       </p>
 
       <form onsubmit="adminLogin(event)">
 
         <div class="field">
-          <label>Passwort</label>
-          <input id="adminPassword" type="password" required>
+          <label>Admin-Passwort</label>
+          <input id="adminPassword"
+            type="password"
+            required>
         </div>
 
         <br>
 
-        <button class="submit">
+        <button class="primary">
           Anmelden
         </button>
 
-        <div id="loginMessage" class="message"></div>
+        <div id="loginMessage"
+          class="message"></div>
 
       </form>
 
     </div>
 
 
-    <div id="adminPanel" class="admin-panel">
+    <div id="adminPanel"
+      class="admin-panel">
 
       <div class="card">
 
@@ -710,10 +953,14 @@ button {
 
           <div>
             <h1>👑 Admin-Dashboard</h1>
-            <p>Bewerbungen verwalten</p>
+
+            <p class="subtitle">
+              Bewerbungen und Bewerbungsphasen verwalten.
+            </p>
           </div>
 
-          <button class="secondary" onclick="adminLogout()">
+          <button class="secondary"
+            onclick="adminLogout()">
             Abmelden
           </button>
 
@@ -722,39 +969,151 @@ button {
       </div>
 
 
+      <!-- EINZELNE ÖFFNEN/SCHLIESSEN -->
+
       <div class="card">
 
-        <h2>⚙️ Bewerbungen</h2>
+        <h2>⚙️ Bewerbungsphasen</h2>
 
-        <p id="applicationStatus">
-          Status wird geladen...
+        <p class="subtitle">
+          Jede Bewerbungsart kann unabhängig geöffnet
+          oder geschlossen werden.
         </p>
 
-        <button
-          class="submit"
-          id="toggleButton"
-          onclick="toggleApplications()">
-          ...
-        </button>
+        <div class="settings-grid">
+
+          <div class="setting-card">
+            <div class="setting-top">
+              <h3>🔧 Modder</h3>
+              <span id="statusModder"
+                class="status">
+                ...
+              </span>
+            </div>
+
+            <br>
+
+            <button id="buttonModder"
+              class="primary"
+              onclick="toggleRole('Modder')">
+              ...
+            </button>
+          </div>
+
+
+          <div class="setting-card">
+            <div class="setting-top">
+              <h3>🎨 Skinner</h3>
+              <span id="statusSkinner"
+                class="status">
+                ...
+              </span>
+            </div>
+
+            <br>
+
+            <button id="buttonSkinner"
+              class="primary"
+              onclick="toggleRole('Skinner')">
+              ...
+            </button>
+          </div>
+
+
+          <div class="setting-card">
+            <div class="setting-top">
+              <h3>🛡️ Supporter</h3>
+              <span id="statusSupporter"
+                class="status">
+                ...
+              </span>
+            </div>
+
+            <br>
+
+            <button id="buttonSupporter"
+              class="primary"
+              onclick="toggleRole('Supporter')">
+              ...
+            </button>
+          </div>
+
+
+          <div class="setting-card">
+            <div class="setting-top">
+              <h3>👑 Admin</h3>
+              <span id="statusAdmin"
+                class="status">
+                ...
+              </span>
+            </div>
+
+            <br>
+
+            <button id="buttonAdmin"
+              class="primary"
+              onclick="toggleRole('Admin')">
+              ...
+            </button>
+          </div>
+
+        </div>
 
       </div>
 
+
+      <!-- BEWERBUNGEN -->
 
       <div class="card">
 
         <div class="admin-header">
 
-          <h2>📋 Eingegangene Bewerbungen</h2>
+          <div>
+            <h2>📋 Bewerbungen</h2>
 
-          <button
-            class="secondary"
+            <p class="subtitle">
+              Wähle aus, welche Bewerbungen angezeigt
+              werden sollen.
+            </p>
+          </div>
+
+          <button class="secondary"
             onclick="loadApplications()">
             🔄 Aktualisieren
           </button>
 
         </div>
 
-        <br>
+
+        <div class="filters">
+
+          <button class="filter active"
+            onclick="setFilter('Alle', this)">
+            Alle
+          </button>
+
+          <button class="filter"
+            onclick="setFilter('Modder', this)">
+            🔧 Modder
+          </button>
+
+          <button class="filter"
+            onclick="setFilter('Skinner', this)">
+            🎨 Skinner
+          </button>
+
+          <button class="filter"
+            onclick="setFilter('Supporter', this)">
+            🛡️ Supporter
+          </button>
+
+          <button class="filter"
+            onclick="setFilter('Admin', this)">
+            👑 Admin
+          </button>
+
+        </div>
+
 
         <div id="applications">
           Bewerbungen werden geladen...
@@ -771,24 +1130,40 @@ button {
 
 <script>
 
-let applicationsOpen = true;
+let settings = {
+  applications: {
+    Admin: true,
+    Supporter: true,
+    Modder: true,
+    Skinner: true
+  }
+};
 
+let currentFilter = "Alle";
+
+
+/* =========================
+   SEITEN
+========================= */
 
 function showPage(id, button) {
 
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.remove("active");
-  });
+  document.querySelectorAll(".page")
+    .forEach(page => {
+      page.classList.remove("active");
+    });
 
-  const page = document.getElementById(id);
+  const page =
+    document.getElementById(id);
 
   if (page) {
     page.classList.add("active");
   }
 
-  document.querySelectorAll(".nav-buttons button").forEach(btn => {
-    btn.classList.remove("active");
-  });
+  document.querySelectorAll(".nav-btn")
+    .forEach(btn => {
+      btn.classList.remove("active");
+    });
 
   if (button) {
     button.classList.add("active");
@@ -798,6 +1173,12 @@ function showPage(id, button) {
     checkAdmin();
   }
 
+  if (
+    ["modder", "skinner", "supporter"].includes(id)
+  ) {
+    loadPublicSettings();
+  }
+
   window.scrollTo({
     top: 0,
     behavior: "smooth"
@@ -805,99 +1186,211 @@ function showPage(id, button) {
 }
 
 
+/* =========================
+   ÖFFENTLICHE EINSTELLUNGEN
+========================= */
+
+async function loadPublicSettings() {
+
+  try {
+
+    const response =
+      await fetch("/api/application-status");
+
+    if (!response.ok) return;
+
+    settings =
+      await response.json();
+
+    updatePublicRole(
+      "Modder",
+      "modder"
+    );
+
+    updatePublicRole(
+      "Skinner",
+      "skinner"
+    );
+
+    updatePublicRole(
+      "Supporter",
+      "supporter"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+}
+
+
+function updatePublicRole(role, id) {
+
+  const open =
+    settings.applications?.[role] === true;
+
+  const form =
+    document.getElementById(
+      id + "FormBox"
+    );
+
+  const closed =
+    document.getElementById(
+      id + "Closed"
+    );
+
+  if (!form || !closed) return;
+
+  if (open) {
+
+    form.style.display = "block";
+    closed.style.display = "none";
+
+  } else {
+
+    form.style.display = "none";
+    closed.style.display = "block";
+
+  }
+}
+
+
+/* =========================
+   BEWERBUNG
+========================= */
+
 async function submitApplication(event, role) {
 
   event.preventDefault();
 
-  const form = event.target;
-  const button = form.querySelector(".submit");
-  const message = form.querySelector(".message");
+  const form =
+    event.target;
 
-  const data = new FormData(form);
+  const button =
+    form.querySelector(".primary");
+
+  const message =
+    form.querySelector(".message");
+
+  const data =
+    new FormData(form);
 
   button.disabled = true;
   button.textContent = "Wird gesendet...";
 
+
   try {
 
-    const response = await fetch("/api/apply", {
+    const response =
+      await fetch("/api/apply", {
 
-      method: "POST",
+        method: "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-      body: JSON.stringify({
+        body: JSON.stringify({
 
-        role: role,
+          role,
 
-        name: data.get("name"),
+          name:
+            data.get("name"),
 
-        discord: data.get("discord"),
+          discord:
+            data.get("discord"),
 
-        email: data.get("email"),
+          email:
+            data.get("email"),
 
-        age: data.get("age"),
+          age:
+            data.get("age"),
 
-        experience: data.get("experience"),
+          experience:
+            data.get("experience"),
 
-        motivation: data.get("motivation"),
+          motivation:
+            data.get("motivation"),
 
-        availability: data.get("availability"),
+          availability:
+            data.get("availability"),
 
-        extra: data.get("extra"),
+          extra:
+            data.get("extra"),
 
-        programs: data.get("programs"),
+          programs:
+            data.get("programs"),
 
-        portfolio: data.get("portfolio"),
+          portfolio:
+            data.get("portfolio"),
 
-        consent: data.get("consent") === "on"
+          consent:
+            data.get("consent") === "on"
 
-      })
+        })
 
-    });
+      });
 
-    const result = await response.json();
+
+    const result =
+      await response.json();
+
 
     if (!response.ok) {
+
       throw new Error(
-        result.error || "Bewerbung konnte nicht gesendet werden."
+        result.error ||
+        "Bewerbung konnte nicht gesendet werden."
       );
+
     }
+
 
     form.reset();
 
-    message.className = "message show success";
+    message.className =
+      "message show success";
 
     message.textContent =
       "✓ Deine Bewerbung wurde erfolgreich abgeschickt.";
 
+
   } catch (error) {
 
-    message.className = "message show error";
+    message.className =
+      "message show error";
 
-    message.textContent = error.message;
+    message.textContent =
+      error.message;
+
 
   } finally {
 
     button.disabled = false;
-    button.textContent = "Bewerbung absenden";
+
+    button.textContent =
+      "Bewerbung absenden";
 
   }
 
 }
 
 
-/* ADMIN */
+/* =========================
+   ADMIN
+========================= */
 
 async function checkAdmin() {
 
   try {
 
-    const response = await fetch("/api/admin/me");
+    const response =
+      await fetch("/api/admin/me");
 
-    const data = await response.json();
+    const data =
+      await response.json();
+
 
     if (data.loggedIn) {
 
@@ -920,22 +1413,26 @@ async function checkAdmin() {
 
 function showAdminLogin() {
 
-  document.getElementById("adminLogin").style.display = "block";
+  document.getElementById(
+    "adminLogin"
+  ).style.display = "block";
 
-  document
-    .getElementById("adminPanel")
-    .classList.remove("visible");
+  document.getElementById(
+    "adminPanel"
+  ).classList.remove("visible");
 
 }
 
 
 function showAdminPanel() {
 
-  document.getElementById("adminLogin").style.display = "none";
+  document.getElementById(
+    "adminLogin"
+  ).style.display = "none";
 
-  document
-    .getElementById("adminPanel")
-    .classList.add("visible");
+  document.getElementById(
+    "adminPanel"
+  ).classList.add("visible");
 
   loadAdminSettings();
   loadApplications();
@@ -948,43 +1445,66 @@ async function adminLogin(event) {
   event.preventDefault();
 
   const password =
-    document.getElementById("adminPassword").value;
+    document.getElementById(
+      "adminPassword"
+    ).value;
 
   const message =
-    document.getElementById("loginMessage");
+    document.getElementById(
+      "loginMessage"
+    );
+
 
   try {
 
-    const response = await fetch("/api/admin/login", {
+    const response =
+      await fetch(
+        "/api/admin/login",
+        {
 
-      method: "POST",
+          method: "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
 
-      body: JSON.stringify({
-        password: password
-      })
+          body: JSON.stringify({
+            password
+          })
 
-    });
+        }
+      );
 
-    const result = await response.json();
+
+    const result =
+      await response.json();
+
 
     if (!response.ok) {
+
       throw new Error(
-        result.error || "Falsches Passwort."
+        result.error ||
+        "Falsches Passwort."
       );
+
     }
 
-    document.getElementById("adminPassword").value = "";
+
+    document.getElementById(
+      "adminPassword"
+    ).value = "";
 
     showAdminPanel();
 
+
   } catch (error) {
 
-    message.className = "message show error";
-    message.textContent = error.message;
+    message.className =
+      "message show error";
+
+    message.textContent =
+      error.message;
 
   }
 
@@ -993,94 +1513,146 @@ async function adminLogin(event) {
 
 async function adminLogout() {
 
-  await fetch("/api/admin/logout", {
-    method: "POST"
-  });
+  await fetch(
+    "/api/admin/logout",
+    {
+      method: "POST"
+    }
+  );
 
   showAdminLogin();
 
 }
 
 
+/* =========================
+   ADMIN SETTINGS
+========================= */
+
 async function loadAdminSettings() {
 
   const response =
-    await fetch("/api/admin/settings");
+    await fetch(
+      "/api/admin/settings"
+    );
 
-  if (!response.ok) return;
-
-  const data = await response.json();
-
-  applicationsOpen =
-    Boolean(data.applicationsOpen);
-
-  updateSettings();
-
-}
-
-
-function updateSettings() {
-
-  document.getElementById(
-    "applicationStatus"
-  ).textContent =
-    applicationsOpen
-      ? "🟢 Bewerbungen sind geöffnet."
-      : "🔴 Bewerbungen sind geschlossen.";
-
-  document.getElementById(
-    "toggleButton"
-  ).textContent =
-    applicationsOpen
-      ? "Bewerbungen schließen"
-      : "Bewerbungen öffnen";
-
-}
-
-
-async function toggleApplications() {
-
-  const response = await fetch(
-    "/api/admin/settings",
-    {
-
-      method: "PATCH",
-
-      headers: {
-        "Content-Type": "application/json"
-      },
-
-      body: JSON.stringify({
-        applicationsOpen: !applicationsOpen
-      })
-
-    }
-  );
 
   if (!response.ok) {
 
-    alert("Einstellung konnte nicht geändert werden.");
+    showAdminLogin();
     return;
 
   }
 
-  applicationsOpen = !applicationsOpen;
 
-  updateSettings();
+  settings =
+    await response.json();
+
+  updateAdminSettings();
 
 }
 
 
-async function loadApplications() {
+function updateAdminSettings() {
 
-  const container =
-    document.getElementById("applications");
+  const roles = [
+    "Admin",
+    "Supporter",
+    "Modder",
+    "Skinner"
+  ];
 
-  container.innerHTML =
-    "Bewerbungen werden geladen...";
+
+  roles.forEach(role => {
+
+    const open =
+      settings.applications?.[role] === true;
+
+    const id =
+      role.toLowerCase();
+
+
+    const status =
+      document.getElementById(
+        "status" + role
+      );
+
+    const button =
+      document.getElementById(
+        "button" + role
+      );
+
+
+    if (!status || !button) return;
+
+
+    status.className =
+      "status " +
+      (open ? "open" : "closed");
+
+
+    status.textContent =
+      open
+        ? "🟢 Geöffnet"
+        : "🔴 Geschlossen";
+
+
+    button.textContent =
+      open
+        ? "Bewerbungen schließen"
+        : "Bewerbungen öffnen";
+
+  });
+
+
+  updatePublicRole(
+    "Modder",
+    "modder"
+  );
+
+  updatePublicRole(
+    "Skinner",
+    "skinner"
+  );
+
+  updatePublicRole(
+    "Supporter",
+    "supporter"
+  );
+
+}
+
+
+async function toggleRole(role) {
+
+  const currentlyOpen =
+    settings.applications?.[role] === true;
+
 
   const response =
-    await fetch("/api/admin/applications");
+    await fetch(
+      "/api/admin/settings",
+      {
+
+        method: "PATCH",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+
+          role,
+
+          open:
+            !currentlyOpen
+
+        })
+
+      }
+    );
+
 
   if (response.status === 401) {
 
@@ -1089,17 +1661,118 @@ async function loadApplications() {
 
   }
 
-  const data = await response.json();
 
-  if (!data.applications ||
-      data.applications.length === 0) {
+  if (!response.ok) {
 
-    container.innerHTML =
-      "<p>Keine Bewerbungen vorhanden.</p>";
+    alert(
+      "Einstellung konnte nicht geändert werden."
+    );
 
     return;
 
   }
+
+
+  settings =
+    await response.json();
+
+  updateAdminSettings();
+
+}
+
+
+/* =========================
+   FILTER
+========================= */
+
+function setFilter(role, button) {
+
+  currentFilter = role;
+
+
+  document.querySelectorAll(
+    ".filter"
+  ).forEach(btn => {
+
+    btn.classList.remove(
+      "active"
+    );
+
+  });
+
+
+  button.classList.add(
+    "active"
+  );
+
+
+  loadApplications();
+
+}
+
+
+/* =========================
+   BEWERBUNGEN LADEN
+========================= */
+
+async function loadApplications() {
+
+  const container =
+    document.getElementById(
+      "applications"
+    );
+
+
+  container.innerHTML =
+    "Bewerbungen werden geladen...";
+
+
+  let url =
+    "/api/admin/applications";
+
+
+  if (currentFilter !== "Alle") {
+
+    url +=
+      "?role=" +
+      encodeURIComponent(
+        currentFilter
+      );
+
+  }
+
+
+  const response =
+    await fetch(url);
+
+
+  if (response.status === 401) {
+
+    showAdminLogin();
+    return;
+
+  }
+
+
+  const data =
+    await response.json();
+
+
+  if (
+    !data.applications ||
+    data.applications.length === 0
+  ) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Keine Bewerbungen vorhanden.
+      </div>
+    `;
+
+    return;
+
+  }
+
 
   container.innerHTML =
     data.applications
@@ -1108,6 +1781,10 @@ async function loadApplications() {
 
 }
 
+
+/* =========================
+   HTML SICHER MACHEN
+========================= */
 
 function escapeHtml(value) {
 
@@ -1121,11 +1798,19 @@ function escapeHtml(value) {
 }
 
 
+/* =========================
+   BEWERBUNG DARSTELLEN
+========================= */
+
 function renderApplication(app) {
 
-  const date = app.createdAt
-    ? new Date(app.createdAt).toLocaleString("de-DE")
-    : "-";
+  const date =
+    app.createdAt
+      ? new Date(
+          app.createdAt
+        ).toLocaleString("de-DE")
+      : "-";
+
 
   return `
 
@@ -1152,7 +1837,8 @@ function renderApplication(app) {
 
         </div>
 
-        <div>
+
+        <div class="badges">
 
           <span class="badge">
             ${escapeHtml(app.role)}
@@ -1166,53 +1852,63 @@ function renderApplication(app) {
 
       </div>
 
+
       <details>
 
         <summary>
-          Bewerbung anzeigen
+          Bewerbung vollständig anzeigen
         </summary>
 
+
         <div>
-          <strong>Alter:</strong>
+          <strong>Alter:</strong><br>
           ${escapeHtml(app.age)}
         </div>
+
 
         <div>
           <strong>Erfahrung:</strong><br>
           ${escapeHtml(app.experience)}
         </div>
 
+
         <div>
           <strong>Programme:</strong><br>
-          ${escapeHtml(app.programs)}
+          ${escapeHtml(app.programs || "-")}
         </div>
+
 
         <div>
           <strong>Portfolio:</strong><br>
-          ${escapeHtml(app.portfolio)}
+          ${escapeHtml(app.portfolio || "-")}
         </div>
+
 
         <div>
           <strong>Motivation:</strong><br>
           ${escapeHtml(app.motivation)}
         </div>
 
+
         <div>
           <strong>Verfügbarkeit:</strong><br>
           ${escapeHtml(app.availability)}
         </div>
+
 
         <div>
           <strong>Weitere Angaben:</strong><br>
           ${escapeHtml(app.extra || "-")}
         </div>
 
+
         <div>
-          <strong>Eingegangen:</strong>
+          <strong>Eingegangen:</strong><br>
           ${date}
         </div>
 
       </details>
+
 
       <div class="application-actions">
 
@@ -1223,30 +1919,35 @@ function renderApplication(app) {
           )">
 
           <option
-            ${app.status === "Neu" ? "selected" : ""}
-          >
+            ${app.status === "Neu"
+              ? "selected"
+              : ""}>
             Neu
           </option>
 
           <option
-            ${app.status === "In Prüfung" ? "selected" : ""}
-          >
+            ${app.status === "In Prüfung"
+              ? "selected"
+              : ""}>
             In Prüfung
           </option>
 
           <option
-            ${app.status === "Angenommen" ? "selected" : ""}
-          >
+            ${app.status === "Angenommen"
+              ? "selected"
+              : ""}>
             Angenommen
           </option>
 
           <option
-            ${app.status === "Abgelehnt" ? "selected" : ""}
-          >
+            ${app.status === "Abgelehnt"
+              ? "selected"
+              : ""}>
             Abgelehnt
           </option>
 
         </select>
+
 
         <button
           class="danger"
@@ -1267,62 +1968,98 @@ function renderApplication(app) {
 }
 
 
-async function changeStatus(id, status) {
+/* =========================
+   STATUS ÄNDERN
+========================= */
 
-  const response = await fetch(
-    "/api/admin/applications/" + id,
-    {
+async function changeStatus(
+  id,
+  status
+) {
 
-      method: "PATCH",
+  const response =
+    await fetch(
+      "/api/admin/applications/" +
+      encodeURIComponent(id),
+      {
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+        method: "PATCH",
 
-      body: JSON.stringify({
-        status: status
-      })
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
 
-    }
-  );
+        body: JSON.stringify({
+          status
+        })
+
+      }
+    );
+
 
   if (!response.ok) {
 
-    alert("Status konnte nicht geändert werden.");
+    alert(
+      "Status konnte nicht geändert werden."
+    );
+
     return;
 
   }
+
 
   loadApplications();
 
 }
 
+
+/* =========================
+   LÖSCHEN
+========================= */
 
 async function deleteApplication(id) {
 
-  if (!confirm(
-    "Diese Bewerbung wirklich löschen?"
-  )) {
+  if (
+    !confirm(
+      "Diese Bewerbung wirklich löschen?"
+    )
+  ) {
     return;
   }
 
-  const response = await fetch(
-    "/api/admin/applications/" + id,
-    {
-      method: "DELETE"
-    }
-  );
+
+  const response =
+    await fetch(
+      "/api/admin/applications/" +
+      encodeURIComponent(id),
+      {
+        method: "DELETE"
+      }
+    );
+
 
   if (!response.ok) {
 
-    alert("Bewerbung konnte nicht gelöscht werden.");
+    alert(
+      "Bewerbung konnte nicht gelöscht werden."
+    );
+
     return;
 
   }
+
 
   loadApplications();
 
 }
+
+
+/* =========================
+   START
+========================= */
+
+loadPublicSettings();
 
 </script>
 
